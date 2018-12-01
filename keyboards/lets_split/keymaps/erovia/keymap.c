@@ -1,7 +1,5 @@
 #include QMK_KEYBOARD_H
 
-extern keymap_config_t keymap_config;
-
 enum planck_layers {
   _QWERTY,
   _COLEMAK,
@@ -119,9 +117,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, RESET,   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, QWERTY,  COLEMAK, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_ASTG
+  _______, _______, _______, _______, _______, _______, _______, _______, KC_ASDN, KC_ASUP, KC_ASRP, KC_ASTG
 )
-
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
