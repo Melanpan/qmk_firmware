@@ -17,16 +17,84 @@ enum planck_keycodes {
 
 enum {
   TD_SPACE_CADET_SHIFT = 0,
-  TD_SPACE_CADET_ENTER = 1
+  TD_SPACE_CADET_ENTER,
+  TD_A,
+  TD_E,
+  TD_I,
+  TD_U,
+  TD_O
 };
+
+#define ae "00E1"  // á
+#define AE "00C1"  // Á
+void tap_dance_a_finished (qk_tap_dance_state_t *state, void *user_data) {
+  switch(state->count) {
+    case 1: send_unicode_hex_string(ae); break;
+    case 2: send_unicode_hex_string(AE); break;
+  }
+}
+
+#define ee "00E9"  // é
+#define EE "00C9"  // É
+void tap_dance_e_finished (qk_tap_dance_state_t *state, void *user_data) {
+  switch(state->count) {
+    case 1: send_unicode_hex_string(ee); break;
+    case 2: send_unicode_hex_string(EE); break;
+  }
+}
+
+#define ie "00ED"  // í
+#define IE "00CD"  // Í
+void tap_dance_i_finished (qk_tap_dance_state_t *state, void *user_data) {
+  switch(state->count) {
+    case 1: send_unicode_hex_string(ie); break;
+    case 2: send_unicode_hex_string(IE); break;
+  }
+}
+
+#define ue "00FC"  // ü
+#define UE "00DC"  // Ü
+#define uee "0171" // ű
+#define UEE "0170" // Ű
+void tap_dance_u_finished (qk_tap_dance_state_t *state, void *user_data) {
+  switch(state->count) {
+    case 1: send_unicode_hex_string(ue); break;
+    case 2: send_unicode_hex_string(UE); break;
+    case 3: send_unicode_hex_string(uee); break;
+    case 4: send_unicode_hex_string(UEE); break;
+  }
+}
+
+#define oe "00F6"  // ö
+#define OE "00D6"  // Ö
+#define oee "0151" // ő
+#define OEE "0150" // Ő
+void tap_dance_o_finished (qk_tap_dance_state_t *state, void *user_data) {
+  switch(state->count) {
+    case 1: send_unicode_hex_string(oe); break;
+    case 2: send_unicode_hex_string(OE); break;
+    case 3: send_unicode_hex_string(oee); break;
+    case 4: send_unicode_hex_string(OEE); break;
+  }
+}
 
 qk_tap_dance_action_t tap_dance_actions[] = {
   [TD_SPACE_CADET_SHIFT] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_LPRN),
-  [TD_SPACE_CADET_ENTER] = ACTION_TAP_DANCE_DOUBLE(KC_ENT, KC_RPRN)
+  [TD_SPACE_CADET_ENTER] = ACTION_TAP_DANCE_DOUBLE(KC_ENT, KC_RPRN),
+  [TD_A] = ACTION_TAP_DANCE_FN(tap_dance_a_finished),
+  [TD_E] = ACTION_TAP_DANCE_FN(tap_dance_e_finished),
+  [TD_I] = ACTION_TAP_DANCE_FN(tap_dance_i_finished),
+  [TD_U] = ACTION_TAP_DANCE_FN(tap_dance_u_finished),
+  [TD_O] = ACTION_TAP_DANCE_FN(tap_dance_o_finished)
 };
 
 #define TD_SHFT TD(TD_SPACE_CADET_SHIFT)
 #define TD_ENTR TD(TD_SPACE_CADET_ENTER)
+#define TD_A TD(TD_A)
+#define TD_E TD(TD_E)
+#define TD_I TD(TD_I)
+#define TD_U TD(TD_U)
+#define TD_O TD(TD_O)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -104,9 +172,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Adjust (Lower + Raise)
  * ,-----------------------------------------------------------------------------------.
- * |      |RESET |      |      |      |      |      |      |      |      |      |      |
+ * |EEPRST|RESET |      |      |      |      |      |      |  Ue  |      |      |      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |Qwerty|Colemk|      |      |      |
+ * |      |  Ae  |      |      |      |      |Qwerty|Colemk|  Ee  |  Ie  |  Oe  |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -114,8 +182,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_ADJUST] = LAYOUT_ortho_4x12(
-  _______, RESET,   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, QWERTY,  COLEMAK, _______, _______, _______,
+  EEP_RST, RESET,   _______, _______, _______, _______, _______, _______, TD_U,    _______, _______, _______,
+  _______, TD_A   , _______, _______, _______, _______, QWERTY,  COLEMAK, TD_E,    TD_I,    TD_O,    _______,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, KC_ASDN, KC_ASUP, KC_ASRP, KC_ASTG
 )
@@ -157,4 +225,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
   }
   return true;
+}
+
+void eeconfig_init_user() {
+  set_unicode_input_mode(UC_LNX);
 }
