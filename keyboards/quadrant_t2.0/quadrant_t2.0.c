@@ -15,44 +15,16 @@
  */
 #include "quadrant_t2.0.h"
 
-// Optional override functions below.
-// You can leave any or all of these undefined.
-// These are only required if you want to perform custom actions.
-
-// /*
-
-void matrix_init_kb(void) {
-  // put your keyboard start-up code here
-  // runs once when the firmware starts up
-
-  matrix_init_user();
+void quadrant_led_on() {
+  writePinLow(D4);
 }
 
-void matrix_scan_kb(void) {
-  // put your looping keyboard code here
-  // runs every cycle (a lot)
-
-  matrix_scan_user();
+void quadrant_led_off() {
+  writePinHigh(D4);
 }
 
-bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
-  // put your per-action keyboard code here
-  // runs for every action, just before processing by the firmware
-
-  return process_record_user(keycode, record);
+void keyboard_pre_init_kb(void) {
+  // Initialize Caps Lock LED
+  setPinOutput(D4);
+  keyboard_pre_init_user();
 }
-
-void led_set_kb(uint8_t usb_led) {
-  // put your keyboard LED indicator (ex: Caps Lock LED) toggling code here
-
-  led_set_user(usb_led);
-  if (usb_led & (1<<USB_LED_CAPS_LOCK)) {
-        // Turn capslock on
-		PORTD |= (1<<4);
-    } else {
-        // Turn capslock off
-		PORTD &= ~(1<<4);
-    }
-}
-
-// */

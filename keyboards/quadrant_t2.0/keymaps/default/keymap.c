@@ -85,18 +85,10 @@ void matrix_scan_user(void) {
 // #define USB_LED_CAPS_LOCK
 
 void led_set_user(uint8_t usb_led) {
-   /*  vagy: if (IS_LED_ON(usb_led, USB_LED_CAPS_LOCK)) {
-    //    writePinLow(D4);
-    // } else {
-    //    writePinHigh(D4);
-    //}
-    led_set_user(usb_led)
-    if (usb_led & (1<<USB_LED_CAPS_LOCK)) {
-      //turn capslock on
-    PORTD |= (1<<4);
-    } else {
-      //turn capslock off
-    PORTD &= ~(1<<4);
-    }
-    */
+  if (IS_LED_ON(usb_led, USB_LED_CAPS_LOCK)) {
+    quadrant_led_on();
+  }
+  else {
+    quadrant_led_off();
+  }
 }
