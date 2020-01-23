@@ -24,8 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PRODUCT_ID      0x422D
 #define DEVICE_VER      0x0001
 #define MANUFACTURER    %YOUR_NAME%
-#define PRODUCT         %KEYBOARD%
-#define DESCRIPTION     QMK Firmware: %KEYBOARD%
+#define PRODUCT         %KEYBOARD_NAME%
+#define DESCRIPTION     QMK Firmware: %KEYBOARD_NAME%
 
 #define RGBLED_NUM 16
 
