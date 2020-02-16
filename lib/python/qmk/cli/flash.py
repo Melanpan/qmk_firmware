@@ -8,7 +8,7 @@ from argparse import FileType
 
 import qmk.path
 from milc import cli
-from qmk.commands import compile_configurator_json, create_make_command, find_keyboard_keymap, parse_configurator_json
+from qmk.commands import compile_configurator_json, create_make_command, parse_configurator_json
 
 
 def print_bootloader_help():
@@ -34,6 +34,7 @@ def print_bootloader_help():
 @cli.argument('-kb', '--keyboard', help='The keyboard to build a firmware for. Use this if you dont have a configurator file. Ignored when a configurator file is supplied.')
 @cli.argument('-b', '--bootloaders', action='store_true', help='List the available bootloaders.')
 @cli.subcommand('QMK Flash.')
+@qmk.path.context_sensitivity
 def flash(cli):
     """Compile and or flash QMK Firmware or keyboard/layout
 
@@ -61,10 +62,9 @@ def flash(cli):
 
     else:
         # Perform the action the user specified
-        user_keyboard, user_keymap = find_keyboard_keymap()
-        if user_keyboard and user_keymap:
+        if cli.config.flash.keyboard and cli.config.flash.keymap:
             # Generate the make command for a specific keyboard/keymap.
-            command = create_make_command(user_keyboard, user_keymap, cli.args.bootloader)
+            command = create_make_command(cli.config.flash.keyboard, cli.config.flash.keymap, cli.args.bootloader)
 
         else:
             cli.log.error('You must supply a configurator export or both `--keyboard` and `--keymap`.')

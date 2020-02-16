@@ -8,13 +8,14 @@ from argparse import FileType
 from milc import cli
 
 import qmk.path
-from qmk.commands import compile_configurator_json, create_make_command, find_keyboard_keymap, parse_configurator_json
+from qmk.commands import compile_configurator_json, create_make_command, parse_configurator_json
 
 
 @cli.argument('filename', nargs='?', arg_only=True, type=FileType('r'), help='The configurator export to compile')
 @cli.argument('-kb', '--keyboard', help='The keyboard to build a firmware for. Ignored when a configurator export is supplied.')
 @cli.argument('-km', '--keymap', help='The keymap to build a firmware for. Ignored when a configurator export is supplied.')
 @cli.subcommand('Compile a QMK Firmware.')
+@qmk.path.context_sensitivity
 def compile(cli):
     """Compile a QMK Firmware.
 
@@ -33,10 +34,9 @@ def compile(cli):
 
     else:
         # Perform the action the user specified
-        user_keyboard, user_keymap = find_keyboard_keymap()
-        if user_keyboard and user_keymap:
+        if cli.config.compile.keyboard and cli.config.compile.keymap:
             # Generate the make command for a specific keyboard/keymap.
-            command = create_make_command(user_keyboard, user_keymap)
+            command = create_make_command(cli.config.compile.keyboard, cli.config.compile.keymap)
 
         else:
             cli.log.error('You must supply a configurator export, both `--keyboard` and `--keymap`, or be in a directory for a keyboard or keymap.')
