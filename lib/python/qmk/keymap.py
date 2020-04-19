@@ -157,7 +157,7 @@ def list_keymaps(keyboard_name):
         while kb_path != keyboards_dir:
             keymaps_dir = kb_path / "keymaps"
             if keymaps_dir.exists():
-                names = names.union([keymap for keymap in keymaps_dir.iterdir() if (keymaps_dir / keymap / "keymap.c").is_file() or (keymaps_dir.iterdir() if (keymaps_dir / keymap / "keymap.json").is_file()])
+                names = names.union([keymap for keymap in keymaps_dir.iterdir() if (keymaps_dir / keymap / "keymap.c").is_file() or (keymaps_dir / keymap / "keymap.json").is_file()])
             kb_path = kb_path.parent
 
         # if community layouts are supported, get them
